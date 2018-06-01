@@ -63,7 +63,7 @@ object ActionBuilder {
     lazy val copyOnlyIfExists = s"if [[ -e $containerPath ]]; then $copy; fi"
 
     cloudSdkAction
-      .withCommand("/bin/sh", "-c", if (fileOutput.optional) copyOnlyIfExists else copy)
+      .withCommand("/bin/sh", "-c", if (fileOutput.optional || fileOutput.secondary) copyOnlyIfExists else copy)
       .withFlags(List(ActionFlag.AlwaysRun))
       .withMounts(mounts)
       .withLabels(Map("description" -> "delocalizing"))
